@@ -49,4 +49,21 @@ export default defineConfig({
   server: {
     port: 5173,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          supabase: ['@supabase/supabase-js'],
+          query: [
+            '@tanstack/react-query',
+            '@tanstack/react-query-persist-client',
+            '@tanstack/query-async-storage-persister',
+            'idb-keyval',
+          ],
+          gestures: ['@use-gesture/react', '@react-spring/web'],
+        },
+      },
+    },
+  },
 });
