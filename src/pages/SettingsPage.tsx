@@ -11,6 +11,7 @@ import { useToast } from '@/components/ui/ToastContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme, type ThemePreference } from '@/hooks/useTheme';
 import { useDesignTheme, type DesignTheme } from '@/hooks/useDesignTheme';
+import { useFontScale, type FontScale } from '@/hooks/useFontScale';
 import { useShowCompletedSeparately } from '@/hooks/useShowCompletedSeparately';
 import { usePwaInstall } from '@/hooks/usePwaInstall';
 import { displayNameSchema, pinSchema } from '@/lib/validation';
@@ -27,9 +28,17 @@ const designOptions: { value: DesignTheme; label: string; description: string }[
   { value: 'glass', label: 'Glass', description: 'Durchscheinende Flächen, weicher Farbverlauf im Hintergrund' },
 ];
 
+const fontScaleOptions: { value: FontScale; label: string }[] = [
+  { value: 'sm', label: 'Klein' },
+  { value: 'md', label: 'Normal' },
+  { value: 'lg', label: 'Groß' },
+  { value: 'xl', label: 'Sehr groß' },
+];
+
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const { design, setDesign } = useDesignTheme();
+  const { scale, setScale } = useFontScale();
   const { profile, signOut, updateDisplayName, updatePassword } = useAuth();
   const { showCompletedSeparately, setShowCompletedSeparately } = useShowCompletedSeparately();
   const { canInstall, isIos, promptInstall } = usePwaInstall();
@@ -193,6 +202,22 @@ export default function SettingsPage() {
                 key={option.value}
                 variant={theme === option.value ? 'primary' : 'secondary'}
                 onClick={() => setTheme(option.value)}
+                className="flex-1"
+              >
+                {option.label}
+              </Button>
+            ))}
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold text-ink-muted">Schriftgröße</h2>
+          <div className="flex gap-2">
+            {fontScaleOptions.map((option) => (
+              <Button
+                key={option.value}
+                variant={scale === option.value ? 'primary' : 'secondary'}
+                onClick={() => setScale(option.value)}
                 className="flex-1"
               >
                 {option.label}

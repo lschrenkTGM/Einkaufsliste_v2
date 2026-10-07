@@ -18,6 +18,9 @@
           document.documentElement.classList.toggle('dark', isDark);
           var design = localStorage.getItem('einkaufsliste:design');
           document.documentElement.setAttribute('data-design', design === 'glass' ? 'glass' : 'clean');
+          var scaleMap = { sm: 15, md: 16, lg: 18, xl: 20 };
+          var fontScale = localStorage.getItem('einkaufsliste:fontScale');
+          document.documentElement.style.fontSize = (scaleMap[fontScale] || 16) + 'px';
         } catch (e) {}
       })();
     </script>

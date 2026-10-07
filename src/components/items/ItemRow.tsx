@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { animated, useSpring } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 import { Check, Minus, Plus, Trash2 } from 'lucide-react';
@@ -34,6 +34,15 @@ export function ItemRow({
   const step = stepFor(item.unit);
   const lineTotal = item.price != null ? item.price * item.quantity : null;
   const rowRef = useRef<HTMLDivElement>(null);
+  const [popping, setPopping] = useState(false);
+
+  function handleToggleClick() {
+    if (!item.checked) {
+      setPopping(true);
+      window.setTimeout(() => setPopping(false), 320);
+    }
+    onToggle();
+  }
 
   const [{ x }, api] = useSpring(() => ({ x: 0 }));
 
@@ -55,7 +64,7 @@ export function ItemRow({
       if (xDir > 0) {
         vibrate();
         api.start({ x: 0, immediate: false });
-        onToggle();
+        handleToggleClick();
       } else {
         vibrate();
         api.start({
@@ -85,20 +94,20 @@ export function ItemRow({
       <animated.div
         {...bind()}
         style={{ x, touchAction: 'pan-y' }}
-        className={`relative flex items-center gap-3 bg-paper px-4 py-3.5 transition-opacity ${
-          item.checked ? 'opacity-45' : ''
+        className={`relative flex items-center gap-3 bg-paper px-4 py-3.5 transition-opacity duration-300 ${
+          item.checked ? 'opacity-55' : ''
         }`}
       >
         <button
-          onClick={onToggle}
+          onClick={handleToggleClick}
           aria-label={item.checked ? 'Zurücknehmen' : 'Abhaken'}
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-150 ${
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-150 ${
             item.checked
               ? 'border-primary bg-primary text-primary-ink'
-              : 'border-ink-faint text-transparent hover:border-primary'
-          }`}
+              : 'border-line bg-paper-sunken text-transparent hover:border-primary'
+          } ${popping ? 'animate-check-pop' : ''}`}
         >
-          <Check size={16} />
+          <Check size={17} strokeWidth={3} />
         </button>
 
         <button onClick={onEdit} className="min-w-0 flex-1 text-left">

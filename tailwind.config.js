@@ -64,11 +64,17 @@ export default {
           '0%': { opacity: '0', transform: 'scale(0.96)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
+        'check-pop': {
+          '0%': { transform: 'scale(0.75)' },
+          '55%': { transform: 'scale(1.18)' },
+          '100%': { transform: 'scale(1)' },
+        },
       },
       animation: {
         'rise-in': 'rise-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both',
         'sheet-in': 'sheet-in 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
         'scale-in': 'scale-in 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+        'check-pop': 'check-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
     },
   },
