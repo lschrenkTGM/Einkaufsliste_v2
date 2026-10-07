@@ -10,6 +10,7 @@ interface ListCardProps {
 export function ListCard({ list, onMenu }: ListCardProps) {
   const navigate = useNavigate();
   const open = list.itemsTotal - list.itemsChecked;
+  const progress = list.itemsTotal > 0 ? list.itemsChecked / list.itemsTotal : 0;
 
   return (
     <div
@@ -17,17 +18,27 @@ export function ListCard({ list, onMenu }: ListCardProps) {
       tabIndex={0}
       onClick={() => navigate(`/list/${list.id}`)}
       onKeyDown={(event) => event.key === 'Enter' && navigate(`/list/${list.id}`)}
-      className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-4 text-left shadow-sm transition-colors duration-150 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:bg-neutral-800"
+      className="group flex items-center gap-3 rounded-2xl border border-line bg-paper-raised p-4 text-left shadow-soft transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lifted"
     >
-      <span className="text-2xl">{list.emoji}</span>
-      <div className="flex-1 overflow-hidden">
-        <p className="truncate font-medium text-neutral-900 dark:text-neutral-100">{list.name}</p>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">
-          {list.itemsChecked} / {list.itemsTotal} erledigt · {open} offen
-        </p>
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-soft text-2xl transition-transform duration-200 group-hover:scale-105">
+        {list.emoji}
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="truncate font-display text-lg leading-tight text-ink">{list.name}</p>
+        <div className="mt-1.5 flex items-center gap-2">
+          <div className="h-1.5 w-16 overflow-hidden rounded-full bg-paper-sunken">
+            <div
+              className="h-full rounded-full bg-primary transition-all duration-300"
+              style={{ width: `${Math.round(progress * 100)}%` }}
+            />
+          </div>
+          <p className="text-xs text-ink-muted">
+            {list.itemsChecked}/{list.itemsTotal} · {open} offen
+          </p>
+        </div>
       </div>
-      <div className="flex items-center gap-1 text-sm text-neutral-400">
-        <Users size={16} />
+      <div className="flex shrink-0 items-center gap-1 text-sm text-ink-faint">
+        <Users size={15} />
         {list.memberCount}
       </div>
       <button
@@ -36,7 +47,7 @@ export function ListCard({ list, onMenu }: ListCardProps) {
           onMenu(list);
         }}
         aria-label="Menü"
-        className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-faint transition-colors hover:bg-paper-sunken hover:text-ink"
       >
         <MoreVertical size={20} />
       </button>

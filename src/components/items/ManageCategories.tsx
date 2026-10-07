@@ -29,17 +29,17 @@ export function ManageCategories({ categories, onAdd, onMove, onDelete }: Manage
         {categories.map((category, index) => (
           <div
             key={category.id}
-            className="flex items-center gap-2 rounded-xl border border-neutral-200 px-3 py-2 dark:border-neutral-800"
+            className="flex items-center gap-2 rounded-xl border border-line px-3 py-2"
           >
             <span className="text-lg">{category.emoji}</span>
-            <span className="flex-1 truncate text-sm text-neutral-900 dark:text-neutral-100">
+            <span className="flex-1 truncate text-sm text-ink">
               {category.name}
             </span>
             <button
               disabled={index === 0}
               onClick={() => onMove(category, 'up')}
               aria-label="Nach oben"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 disabled:opacity-30 dark:text-neutral-400 dark:hover:bg-neutral-800"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-muted hover:bg-paper-sunken disabled:opacity-30"
             >
               <ArrowUp size={16} />
             </button>
@@ -47,14 +47,14 @@ export function ManageCategories({ categories, onAdd, onMove, onDelete }: Manage
               disabled={index === categories.length - 1}
               onClick={() => onMove(category, 'down')}
               aria-label="Nach unten"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 disabled:opacity-30 dark:text-neutral-400 dark:hover:bg-neutral-800"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-muted hover:bg-paper-sunken disabled:opacity-30"
             >
               <ArrowDown size={16} />
             </button>
             <button
               onClick={() => onDelete(category)}
               aria-label="Löschen"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-danger hover:bg-danger-soft"
             >
               <Trash2 size={16} />
             </button>

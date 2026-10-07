@@ -238,14 +238,14 @@ export default function ListPage() {
             <button
               onClick={() => setShareOpen(true)}
               aria-label="Teilen"
-              className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-paper-sunken hover:text-ink"
             >
               <Share2 size={20} />
             </button>
             <button
               onClick={() => setMenuOpen(true)}
               aria-label="Menü"
-              className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-paper-sunken hover:text-ink"
             >
               <MoreVertical size={20} />
             </button>
@@ -312,7 +312,7 @@ export default function ListPage() {
       </div>
 
       <div
-        className="safe-bottom fixed inset-x-0 mx-auto max-w-[640px] border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950"
+        className="safe-bottom fixed inset-x-0 mx-auto max-w-[640px] border-t border-line bg-paper-raised shadow-lifted"
         style={{ bottom: keyboardInset }}
       >
         <TotalBar total={total} openTotal={openTotal} itemsWithoutPrice={itemsWithoutPrice} />

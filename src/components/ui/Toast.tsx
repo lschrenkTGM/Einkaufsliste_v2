@@ -7,9 +7,9 @@ interface ToastItem extends ToastOptions {
 }
 
 const toneIcon: Record<ToastTone, ReactNode> = {
-  success: <CheckCircle2 size={18} className="text-primary-400" />,
-  error: <AlertCircle size={18} className="text-red-400" />,
-  info: <Info size={18} className="text-neutral-400" />,
+  success: <CheckCircle2 size={18} className="text-primary" />,
+  error: <AlertCircle size={18} className="text-danger-strong" />,
+  info: <Info size={18} className="text-accent" />,
 };
 
 let nextId = 0;
@@ -37,13 +37,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className="pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-xl bg-neutral-900 px-4 py-3 text-sm text-white shadow-lg dark:bg-neutral-800"
+            className="animate-rise-in pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-2xl border border-ink/10 bg-ink px-4 py-3 text-sm text-paper shadow-lifted"
           >
             {toneIcon[toast.tone ?? 'info']}
             <span className="flex-1">{toast.message}</span>
             {toast.action && (
               <button
-                className="font-semibold text-primary-400"
+                className="font-semibold text-accent-strong"
                 onClick={() => {
                   toast.action?.onClick();
                   dismiss(toast.id);

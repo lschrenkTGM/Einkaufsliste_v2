@@ -70,11 +70,11 @@ export function ShareDialog({ list, open, onClose }: ShareDialogProps) {
   return (
     <Sheet open={open} onClose={onClose} title="Liste teilen">
       <div className="flex flex-col gap-5">
-        <div className="flex flex-col items-center gap-2 rounded-xl bg-neutral-100 p-4 text-center dark:bg-neutral-800">
-          <p className="text-2xl font-bold tracking-widest text-neutral-900 dark:text-neutral-100">
+        <div className="flex flex-col items-center gap-2 rounded-2xl border border-dashed border-primary/30 bg-primary-soft p-5 text-center">
+          <p className="font-display text-3xl tracking-[0.15em] text-primary">
             {list.invite_code}
           </p>
-          <p className="break-all text-sm text-neutral-500 dark:text-neutral-400">{joinUrl}</p>
+          <p className="break-all text-sm text-ink-muted">{joinUrl}</p>
         </div>
 
         <div className="flex gap-2">
@@ -93,14 +93,14 @@ export function ShareDialog({ list, open, onClose }: ShareDialogProps) {
         )}
 
         <div>
-          <p className="mb-2 text-sm font-semibold text-neutral-500 dark:text-neutral-400">Mitglieder</p>
+          <p className="mb-2 text-sm font-semibold text-ink-muted">Mitglieder</p>
           <div className="flex flex-col gap-1">
             {members.map((member) => (
               <div
                 key={member.userId}
-                className="flex items-center gap-2 rounded-xl border border-neutral-200 px-3 py-2 dark:border-neutral-800"
+                className="flex items-center gap-2 rounded-xl border border-line px-3 py-2"
               >
-                <span className="flex-1 truncate text-sm text-neutral-900 dark:text-neutral-100">
+                <span className="flex-1 truncate text-sm text-ink">
                   {member.profile?.display_name || member.profile?.username || 'Unbekannt'}
                   {member.role === 'owner' && ' (Owner)'}
                 </span>
@@ -108,7 +108,7 @@ export function ShareDialog({ list, open, onClose }: ShareDialogProps) {
                   <button
                     onClick={() => removeMemberFromList(member.userId)}
                     aria-label="Entfernen"
-                    className="flex h-9 w-9 items-center justify-center rounded-full text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+                    className="flex h-9 w-9 items-center justify-center rounded-full text-danger hover:bg-danger-soft"
                   >
                     <UserX size={16} />
                   </button>

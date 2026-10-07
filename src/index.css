@@ -1,14 +1,107 @@
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('./assets/fonts/Fraunces-Variable.woff2') format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('./assets/fonts/Fraunces-Italic.woff2') format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('./assets/fonts/PlusJakartaSans-Variable.woff2') format('woff2-variations');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./assets/fonts/PlusJakartaSans-Italic.woff2') format('woff2-variations');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-paper: 250 246 239;
+    --color-paper-raised: 255 253 249;
+    --color-paper-sunken: 241 234 220;
+    --color-ink: 26 32 27;
+    --color-ink-muted: 103 95 83;
+    --color-ink-faint: 158 148 132;
+    --color-border: 224 213 193;
+
+    --color-primary: 31 95 68;
+    --color-primary-strong: 20 68 48;
+    --color-primary-soft: 222 234 223;
+    --color-primary-ink: 255 253 249;
+
+    --color-accent: 196 101 56;
+    --color-accent-strong: 160 76 38;
+    --color-accent-soft: 243 223 203;
+
+    --color-danger: 169 62 48;
+    --color-danger-strong: 138 46 34;
+    --color-danger-soft: 244 221 213;
+  }
+
+  :root.dark {
+    --color-paper: 19 18 16;
+    --color-paper-raised: 27 25 22;
+    --color-paper-sunken: 13 12 11;
+    --color-ink: 240 235 224;
+    --color-ink-muted: 166 157 142;
+    --color-ink-faint: 102 95 84;
+    --color-border: 54 49 41;
+
+    --color-primary: 121 196 157;
+    --color-primary-strong: 157 219 180;
+    --color-primary-soft: 38 59 48;
+    --color-primary-ink: 13 26 19;
+
+    --color-accent: 224 145 100;
+    --color-accent-strong: 237 170 128;
+    --color-accent-soft: 56 40 29;
+
+    --color-danger: 224 120 102;
+    --color-danger-strong: 237 150 134;
+    --color-danger-soft: 58 31 27;
+  }
+
   html {
     -webkit-tap-highlight-color: transparent;
+    font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   }
 
   body {
     overscroll-behavior-y: none;
+    background-color: rgb(var(--color-paper));
+    background-image:
+      radial-gradient(circle at 1.5px 1.5px, rgb(var(--color-ink) / 0.035) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+
+  ::selection {
+    background-color: rgb(var(--color-accent) / 0.25);
+    color: rgb(var(--color-ink));
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-ink-faint)) transparent;
   }
 }
 
@@ -23,10 +116,19 @@
   }
 }
 
+.font-display {
+  font-family: 'Fraunces', ui-serif, Georgia, serif;
+  font-variation-settings: 'opsz' 40;
+}
+
 .safe-top {
   padding-top: env(safe-area-inset-top);
 }
 
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+.stagger-item {
+  animation: rise-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }

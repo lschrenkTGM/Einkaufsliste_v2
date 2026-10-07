@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { ShoppingCart } from 'lucide-react';
+import { ArrowRight, ShoppingBasket } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -58,51 +58,74 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-6">
-      <div className="flex flex-col items-center gap-2 text-center">
-        <ShoppingCart size={40} className="text-primary-600" />
-        <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">Einkaufsliste</h1>
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-12">
+      <div
+        className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-primary-soft blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -bottom-32 -right-16 h-72 w-72 rounded-full bg-accent-soft blur-3xl"
+        aria-hidden="true"
+      />
+
+      <div className="relative flex w-full max-w-sm flex-col items-center">
+        <div className="animate-rise-in flex flex-col items-center gap-4 text-center">
+          <div className="flex h-16 w-16 rotate-[-6deg] items-center justify-center rounded-3xl bg-primary text-primary-ink shadow-lifted">
+            <ShoppingBasket size={30} strokeWidth={1.75} />
+          </div>
+          <div>
+            <h1 className="font-display text-4xl italic leading-none text-ink">Einkaufsliste</h1>
+            <p className="mt-2 text-sm text-ink-muted">Gemeinsam einkaufen, nie wieder vergessen.</p>
+          </div>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="animate-rise-in mt-10 flex w-full flex-col gap-4 rounded-3xl border border-line bg-paper-raised p-6 shadow-soft"
+          style={{ animationDelay: '80ms' }}
+        >
+          <Input
+            label="Username"
+            name="username"
+            autoComplete="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+            error={usernameError}
+          />
+          <Input
+            label="PIN (6 Ziffern)"
+            name="pin"
+            type="password"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={6}
+            autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
+            value={pin}
+            onChange={(event) => setPin(event.target.value.replace(/\D/g, '').slice(0, 6))}
+            error={pinError}
+          />
+
+          {mode === 'register' && (
+            <p className="-mt-1 text-xs leading-relaxed text-ink-faint">
+              Merk dir deinen PIN gut, es gibt keine Wiederherstellung.
+            </p>
+          )}
+
+          <Button type="submit" disabled={submitting} className="mt-1 w-full">
+            {mode === 'register' ? 'Account erstellen' : 'Einloggen'}
+            <ArrowRight size={16} />
+          </Button>
+        </form>
+
+        <button
+          onClick={() => setMode(mode === 'register' ? 'login' : 'register')}
+          className="animate-rise-in mt-6 text-sm font-medium text-ink-muted transition-colors hover:text-primary"
+          style={{ animationDelay: '140ms' }}
+        >
+          {mode === 'register' ? 'Schon registriert? ' : 'Noch keinen Account? '}
+          <span className="text-primary">{mode === 'register' ? 'Einloggen' : 'Registrieren'}</span>
+        </button>
       </div>
-
-      <form onSubmit={handleSubmit} className="flex w-full max-w-sm flex-col gap-4">
-        <Input
-          label="Username"
-          name="username"
-          autoComplete="username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-          error={usernameError}
-        />
-        <Input
-          label="PIN (6 Ziffern)"
-          name="pin"
-          type="password"
-          inputMode="numeric"
-          pattern="[0-9]*"
-          maxLength={6}
-          autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
-          value={pin}
-          onChange={(event) => setPin(event.target.value.replace(/\D/g, '').slice(0, 6))}
-          error={pinError}
-        />
-
-        {mode === 'register' && (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
-            Merk dir deinen PIN gut, es gibt keine Wiederherstellung.
-          </p>
-        )}
-
-        <Button type="submit" disabled={submitting}>
-          {mode === 'register' ? 'Account erstellen' : 'Einloggen'}
-        </Button>
-      </form>
-
-      <button
-        onClick={() => setMode(mode === 'register' ? 'login' : 'register')}
-        className="text-sm text-primary-600 dark:text-primary-400"
-      >
-        {mode === 'register' ? 'Schon registriert? Einloggen' : 'Noch keinen Account? Registrieren'}
-      </button>
     </div>
   );
 }

@@ -73,12 +73,12 @@ export function ItemRow({
   );
 
   return (
-    <div ref={rowRef} className="relative overflow-hidden border-b border-neutral-100 last:border-b-0 dark:border-neutral-800">
+    <div ref={rowRef} className="relative overflow-hidden border-b border-line/70 last:border-b-0">
       <div className="absolute inset-0 flex items-stretch justify-between">
-        <div className="flex items-center gap-2 bg-primary-600 px-4 text-white">
+        <div className="flex items-center gap-2 bg-primary px-4 text-primary-ink">
           <Check size={20} />
         </div>
-        <div className="flex items-center gap-2 bg-red-600 px-4 text-white">
+        <div className="flex items-center gap-2 bg-danger px-4 text-primary-ink">
           <Trash2 size={20} />
         </div>
       </div>
@@ -86,54 +86,46 @@ export function ItemRow({
       <animated.div
         {...bind()}
         style={{ x, touchAction: 'pan-y' }}
-        className={`relative flex items-center gap-3 bg-white px-4 py-3 dark:bg-neutral-950 ${
-          item.checked ? 'opacity-50' : ''
+        className={`relative flex items-center gap-3 bg-paper px-4 py-3.5 transition-opacity ${
+          item.checked ? 'opacity-45' : ''
         }`}
       >
         <button
           onClick={onToggle}
           aria-label={item.checked ? 'Zurücknehmen' : 'Abhaken'}
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-150 ${
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-150 ${
             item.checked
-              ? 'border-primary-600 bg-primary-600 text-white'
-              : 'border-neutral-300 text-transparent dark:border-neutral-600'
+              ? 'border-primary bg-primary text-primary-ink'
+              : 'border-ink-faint text-transparent hover:border-primary'
           }`}
         >
           <Check size={16} />
         </button>
 
         <button onClick={onEdit} className="min-w-0 flex-1 text-left">
-          <p
-            className={`truncate text-base text-neutral-900 dark:text-neutral-100 ${
-              item.checked ? 'line-through' : ''
-            }`}
-          >
-            {item.name}
-          </p>
-          <p className="truncate text-sm text-neutral-500 dark:text-neutral-400">
+          <p className={`truncate text-base text-ink ${item.checked ? 'line-through' : ''}`}>{item.name}</p>
+          <p className="truncate text-sm text-ink-muted">
             {formatQuantity(item.quantity)} {item.unit ?? ''}
             {lineTotal != null && ` · ${formatCurrency(lineTotal)}`}
           </p>
           {item.checked && checkedByName && (
-            <p className="truncate text-xs text-neutral-400 dark:text-neutral-500">
-              Zuletzt abgehakt von {checkedByName}
-            </p>
+            <p className="truncate text-xs text-ink-faint">Zuletzt abgehakt von {checkedByName}</p>
           )}
         </button>
 
         {!item.checked && (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5">
             <button
               onClick={() => onQuantityChange(Math.max(step, item.quantity - step))}
               aria-label="Weniger"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-paper-sunken hover:text-ink"
             >
               <Minus size={16} />
             </button>
             <button
               onClick={() => onQuantityChange(item.quantity + step)}
               aria-label="Mehr"
-              className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-paper-sunken hover:text-ink"
             >
               <Plus size={16} />
             </button>

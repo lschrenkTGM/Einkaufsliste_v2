@@ -9,8 +9,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(__dirname, '../public/icons');
 mkdirSync(outDir, { recursive: true });
 
-const BG = [0x05, 0x96, 0x69]; // emerald-600
-const FG = [0xff, 0xff, 0xff];
+const BG = [0x1f, 0x5f, 0x44]; // primary (forest green)
+const FG = [0xfa, 0xf6, 0xef]; // paper (warm cream)
 
 function crc32(buf) {
   let c;

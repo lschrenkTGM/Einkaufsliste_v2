@@ -117,8 +117,8 @@ export default function SettingsPage() {
       <Header title="Einstellungen" />
       <div className="flex flex-col gap-8 p-4">
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">Profil</h2>
-          <p className="text-sm text-neutral-400">Username: {profile?.username ?? '–'}</p>
+          <h2 className="text-sm font-semibold text-ink-muted">Profil</h2>
+          <p className="text-sm text-ink-faint">Username: {profile?.username ?? '–'}</p>
           <form onSubmit={handleDisplayNameSubmit} className="flex flex-col gap-2">
             <Input
               label="Anzeigename"
@@ -133,7 +133,7 @@ export default function SettingsPage() {
         </section>
 
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">PIN ändern</h2>
+          <h2 className="text-sm font-semibold text-ink-muted">PIN ändern</h2>
           <form onSubmit={handlePinSubmit} className="flex flex-col gap-2">
             <Input
               label="Aktueller PIN"
@@ -164,7 +164,7 @@ export default function SettingsPage() {
         </section>
 
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">Design</h2>
+          <h2 className="text-sm font-semibold text-ink-muted">Design</h2>
           <div className="flex gap-2">
             {themeOptions.map((option) => (
               <Button
@@ -180,36 +180,36 @@ export default function SettingsPage() {
         </section>
 
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">Listenansicht</h2>
-          <label className="flex items-center justify-between rounded-xl border border-neutral-200 px-3 py-2 dark:border-neutral-800">
-            <span className="text-sm text-neutral-900 dark:text-neutral-100">
+          <h2 className="text-sm font-semibold text-ink-muted">Listenansicht</h2>
+          <label className="flex items-center justify-between rounded-xl border border-line px-3 py-2">
+            <span className="text-sm text-ink">
               Erledigte separat anzeigen
             </span>
             <input
               type="checkbox"
               checked={showCompletedSeparately}
               onChange={(event) => setShowCompletedSeparately(event.target.checked)}
-              className="h-5 w-5 accent-primary-600"
+              className="h-5 w-5 accent-primary"
             />
           </label>
         </section>
 
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">App</h2>
+          <h2 className="text-sm font-semibold text-ink-muted">App</h2>
           {canInstall && (
             <Button variant="secondary" onClick={handleInstall}>
               <Smartphone size={18} /> App installieren
             </Button>
           )}
           {!canInstall && isIos && (
-            <p className="flex items-center gap-2 rounded-xl border border-neutral-200 px-3 py-2 text-sm text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
+            <p className="flex items-center gap-2 rounded-xl border border-line px-3 py-2 text-sm text-ink-muted">
               <Share2 size={16} /> Teilen → Zum Home-Bildschirm
             </p>
           )}
           <Button variant="secondary" onClick={handleClearLocalData}>
             <Trash2 size={18} /> Lokale Daten löschen
           </Button>
-          <p className="text-xs text-neutral-400">Version {APP_VERSION}</p>
+          <p className="text-xs text-ink-faint">Version {APP_VERSION}</p>
         </section>
 
         <section className="flex flex-col gap-2">

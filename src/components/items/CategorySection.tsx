@@ -31,18 +31,18 @@ export function CategorySection({
   const openCount = items.filter((item) => !item.checked).length;
 
   return (
-    <div className="border-b border-neutral-100 dark:border-neutral-800">
+    <div className="border-b border-line/70">
       <button
         onClick={() => setCollapsed((c) => !c)}
-        className="flex w-full items-center gap-2 px-4 py-3 text-left"
+        className="flex w-full items-center gap-2.5 px-4 py-3.5 text-left"
       >
         <ChevronDown
-          size={18}
-          className={`text-neutral-400 transition-transform duration-150 ${collapsed ? '-rotate-90' : ''}`}
+          size={16}
+          className={`text-ink-faint transition-transform duration-200 ${collapsed ? '-rotate-90' : ''}`}
         />
         <span className="text-lg">{emoji}</span>
-        <span className="font-medium text-neutral-900 dark:text-neutral-100">{title}</span>
-        <span className="ml-auto text-sm text-neutral-400">{openCount} offen</span>
+        <span className="font-display text-base text-ink">{title}</span>
+        <span className="ml-auto text-xs font-medium text-ink-faint">{openCount} offen</span>
       </button>
       {!collapsed && (
         <div>

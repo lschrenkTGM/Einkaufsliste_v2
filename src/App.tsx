@@ -14,7 +14,7 @@ const SettingsPage = lazy(() => import('@/pages/SettingsPage'));
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 
 function RouteFallback() {
-  return <div className="flex min-h-screen items-center justify-center text-sm text-neutral-400">Lädt…</div>;
+  return <div className="flex min-h-screen items-center justify-center bg-paper text-sm text-ink-faint">Lädt…</div>;
 }
 
 export default function App() {

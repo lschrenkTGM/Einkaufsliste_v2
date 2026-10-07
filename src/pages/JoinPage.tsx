@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Link2, ShoppingCart } from 'lucide-react';
+import { Link2, ShoppingBasket } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
@@ -43,12 +43,12 @@ export default function JoinPage() {
 
   if (status === 'error') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6 text-center">
-        <Link2 size={40} className="text-neutral-400" />
-        <h1 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-          Einladung ungültig
-        </h1>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-paper p-6 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-danger-soft text-danger">
+          <Link2 size={28} />
+        </div>
+        <h1 className="font-display text-2xl text-ink">Einladung ungültig</h1>
+        <p className="text-sm text-ink-muted">
           Der Code „{code}“ ist nicht gültig oder wurde bereits erneuert.
         </p>
         <Button onClick={() => navigate('/')}>Zur Übersicht</Button>
@@ -57,9 +57,11 @@ export default function JoinPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6 text-center">
-      <ShoppingCart size={40} className="animate-pulse text-primary-600" />
-      <p className="text-sm text-neutral-500 dark:text-neutral-400">Trete Liste bei …</p>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-paper p-6 text-center">
+      <div className="flex h-16 w-16 animate-pulse items-center justify-center rounded-2xl bg-primary-soft text-primary">
+        <ShoppingBasket size={28} />
+      </div>
+      <p className="text-sm text-ink-muted">Trete Liste bei …</p>
     </div>
   );
 }

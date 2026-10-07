@@ -16,8 +16,8 @@ export default defineConfig({
         lang: 'de-AT',
         display: 'standalone',
         orientation: 'portrait',
-        theme_color: '#059669',
-        background_color: '#ffffff',
+        theme_color: '#FAF6EF',
+        background_color: '#FAF6EF',
         start_url: '/',
         icons: [
           { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
@@ -33,7 +33,7 @@ export default defineConfig({
       workbox: {
         // Nur App-Shell (HTML/JS/CSS/Icons) precachen – Supabase-API-Calls werden
         // bewusst NICHT vom Service Worker gecacht (das übernimmt TanStack Query).
-        globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
         navigateFallbackDenylist: [/^\/join\//],
       },
       devOptions: {

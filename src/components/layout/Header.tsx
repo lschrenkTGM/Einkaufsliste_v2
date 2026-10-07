@@ -12,17 +12,17 @@ export function Header({ title, showBack, actions }: HeaderProps) {
   const navigate = useNavigate();
 
   return (
-    <header className="safe-top sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-neutral-200 bg-white/90 px-2 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/90">
+    <header className="safe-top sticky top-0 z-30 flex h-16 items-center gap-1 border-b border-line bg-paper/90 px-2 backdrop-blur-md">
       {showBack && (
         <button
           onClick={() => navigate(-1)}
           aria-label="Zurück"
-          className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-paper-sunken hover:text-ink"
         >
           <ChevronLeft size={22} />
         </button>
       )}
-      <h1 className="flex-1 truncate text-lg font-semibold text-neutral-900 dark:text-neutral-100">{title}</h1>
+      <h1 className="font-display flex-1 truncate text-xl text-ink">{title}</h1>
       {actions && <div className="flex items-center gap-1">{actions}</div>}
     </header>
   );

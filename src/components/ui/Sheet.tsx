@@ -14,17 +14,17 @@ export function Sheet({ open, onClose, title, children }: SheetProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center md:items-center" role="dialog" aria-modal="true">
       <div
-        className="absolute inset-0 bg-black/40 transition-opacity duration-200"
+        className="absolute inset-0 bg-ink/30 backdrop-blur-sm transition-opacity duration-200"
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="safe-bottom relative w-full max-w-[640px] rounded-t-2xl bg-white p-4 shadow-xl transition-transform duration-200 md:rounded-2xl dark:bg-neutral-900">
-        <div className="mb-3 flex items-center justify-between">
-          {title && <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{title}</h2>}
+      <div className="safe-bottom animate-sheet-in md:animate-scale-in relative max-h-[88vh] w-full max-w-[640px] overflow-y-auto rounded-t-3xl border-t border-line bg-paper-raised p-5 shadow-sheet md:rounded-3xl md:border">
+        <div className="mb-4 flex items-center justify-between">
+          {title && <h2 className="font-display text-xl text-ink">{title}</h2>}
           <button
             onClick={onClose}
             aria-label="Schließen"
-            className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-paper-sunken hover:text-ink"
           >
             <X size={20} />
           </button>

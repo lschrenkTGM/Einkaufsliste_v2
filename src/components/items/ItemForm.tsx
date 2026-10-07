@@ -55,11 +55,11 @@ export function ItemForm({ item, categories, onSave, onDelete, submitting }: Ite
           className="flex-1"
         />
         <div className="flex flex-1 flex-col gap-1">
-          <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Einheit</label>
+          <label className="text-sm font-medium text-ink-muted">Einheit</label>
           <select
             value={unit}
             onChange={(event) => setUnit(event.target.value)}
-            className="min-h-[44px] rounded-xl border border-neutral-300 bg-white px-3 py-2 text-base text-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
+            className="min-h-[46px] rounded-xl border border-line bg-paper-raised px-3 py-2 text-base text-ink focus:border-primary focus:outline-none"
           >
             <option value="">Keine Einheit</option>
             {UNITS.map((u) => (
@@ -82,11 +82,11 @@ export function ItemForm({ item, categories, onSave, onDelete, submitting }: Ite
       />
 
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">Kategorie</label>
+        <label className="text-sm font-medium text-ink-muted">Kategorie</label>
         <select
           value={categoryId}
           onChange={(event) => setCategoryId(event.target.value)}
-          className="min-h-[44px] rounded-xl border border-neutral-300 bg-white px-3 py-2 text-base text-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
+          className="min-h-[46px] rounded-xl border border-line bg-paper-raised px-3 py-2 text-base text-ink focus:border-primary focus:outline-none"
         >
           <option value="">Ohne Kategorie</option>
           {categories.map((category) => (

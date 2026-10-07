@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { ArrowUp } from 'lucide-react';
 import { parseQuickAdd } from '@/lib/quickAdd';
 import type { Item } from '@/types/db';
 import type { NewItemInput } from '@/hooks/useItems';
@@ -46,38 +47,49 @@ export function QuickAddBar({ items, onAdd }: QuickAddBarProps) {
   }
 
   return (
-    <div className="relative px-4 py-2">
+    <div className="relative px-3 py-2.5">
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute bottom-full left-4 right-4 mb-1 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg dark:border-neutral-800 dark:bg-neutral-900">
+        <div className="animate-rise-in absolute bottom-full left-3 right-3 mb-2 overflow-hidden rounded-2xl border border-line bg-paper-raised shadow-lifted">
           {suggestions.map((item) => (
             <button
               key={item.id}
               type="button"
               onClick={() => submit(item.name)}
-              className="block w-full px-4 py-2 text-left text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              className="block w-full px-4 py-2.5 text-left text-sm text-ink transition-colors hover:bg-paper-sunken"
             >
               {item.name}
             </button>
           ))}
         </div>
       )}
-      <input
-        value={value}
-        onChange={(event) => {
-          setValue(event.target.value);
-          setShowSuggestions(true);
-        }}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            event.preventDefault();
-            submit(value);
-          }
-        }}
-        onFocus={() => setShowSuggestions(true)}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-        placeholder="Artikel hinzufügen, z.B. 2 kg Äpfel"
-        className="min-h-[44px] w-full rounded-xl border border-neutral-300 bg-white px-4 py-2 text-base text-neutral-900 placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
-      />
+      <div className="flex items-center gap-2 rounded-2xl border border-line bg-paper-sunken pl-4 pr-1.5 transition-colors focus-within:border-primary focus-within:shadow-ring">
+        <input
+          value={value}
+          onChange={(event) => {
+            setValue(event.target.value);
+            setShowSuggestions(true);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              submit(value);
+            }
+          }}
+          onFocus={() => setShowSuggestions(true)}
+          onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+          placeholder="Artikel hinzufügen, z.B. 2 kg Äpfel"
+          className="min-h-[46px] flex-1 bg-transparent text-base text-ink placeholder:text-ink-faint focus:outline-none"
+        />
+        <button
+          type="button"
+          onClick={() => submit(value)}
+          disabled={!value.trim()}
+          aria-label="Hinzufügen"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-ink transition-all duration-150 disabled:scale-90 disabled:opacity-0"
+        >
+          <ArrowUp size={18} />
+        </button>
+      </div>
     </div>
   );
 }

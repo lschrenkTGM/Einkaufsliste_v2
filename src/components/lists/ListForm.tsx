@@ -43,17 +43,17 @@ export function ListForm({
         autoFocus
       />
       <div>
-        <p className="mb-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">Emoji</p>
+        <p className="mb-2 text-sm font-medium text-ink-muted">Emoji</p>
         <div className="grid grid-cols-6 gap-2">
           {LIST_EMOJIS.map((option) => (
             <button
               key={option}
               type="button"
               onClick={() => setEmoji(option)}
-              className={`flex h-11 w-11 items-center justify-center rounded-xl text-xl transition-colors duration-150 ${
+              className={`flex h-11 w-11 items-center justify-center rounded-xl text-xl transition-all duration-150 ${
                 emoji === option
-                  ? 'bg-primary-100 ring-2 ring-primary-500 dark:bg-primary-900/40'
-                  : 'bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700'
+                  ? 'bg-primary-soft shadow-ring scale-105'
+                  : 'bg-paper-sunken hover:bg-line/60'
               }`}
             >
               {option}

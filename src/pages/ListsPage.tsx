@@ -102,8 +102,10 @@ export default function ListsPage() {
 
       {lists && lists.length > 0 && (
         <div className="flex flex-col gap-3 p-4">
-          {lists.map((list) => (
-            <ListCard key={list.id} list={list} onMenu={setActionList} />
+          {lists.map((list, index) => (
+            <div key={list.id} className="stagger-item" style={{ animationDelay: `${index * 40}ms` }}>
+              <ListCard list={list} onMenu={setActionList} />
+            </div>
           ))}
         </div>
       )}
