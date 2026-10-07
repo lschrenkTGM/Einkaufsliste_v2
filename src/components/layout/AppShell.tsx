@@ -1,0 +1,16 @@
+import type { ReactNode } from 'react';
+import { BottomNav } from './BottomNav';
+
+interface AppShellProps {
+  children: ReactNode;
+  showBottomNav?: boolean;
+}
+
+export function AppShell({ children, showBottomNav = true }: AppShellProps) {
+  return (
+    <div className="mx-auto flex min-h-screen w-full max-w-[640px] flex-col bg-white dark:bg-neutral-950">
+      <div className="flex-1">{children}</div>
+      {showBottomNav && <BottomNav />}
+    </div>
+  );
+}
