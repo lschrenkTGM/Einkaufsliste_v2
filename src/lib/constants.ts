@@ -2,6 +2,12 @@ export const UNITS = ['Stk', 'kg', 'g', 'l', 'ml', 'Pkg', 'Dose', 'Fl.', 'Bund',
 
 export type Unit = (typeof UNITS)[number];
 
+export function stepFor(unit: string | null): number {
+  if (unit === 'kg' || unit === 'l') return 0.5;
+  if (unit === 'g' || unit === 'ml') return 50;
+  return 1;
+}
+
 export const DEFAULT_CATEGORIES = [
   { name: 'Obst & Gemüse', emoji: '🥦', sort_order: 10 },
   { name: 'Brot & Gebäck', emoji: '🥖', sort_order: 20 },

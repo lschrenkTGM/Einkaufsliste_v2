@@ -68,7 +68,10 @@ export function useItemMutations(listId: string | undefined) {
       price?: number | null;
       category_id?: string | null;
     }) => {
-      const { error } = await supabase.from('items').update(fields).eq('id', id);
+      const { error } = await supabase
+        .from('items')
+        .update({ ...fields, updated_by: profile?.id ?? null })
+        .eq('id', id);
       if (error) throw error;
     },
     onSuccess: invalidate,
@@ -82,6 +85,7 @@ export function useItemMutations(listId: string | undefined) {
           checked,
           checked_by: checked ? profile?.id ?? null : null,
           checked_at: checked ? new Date().toISOString() : null,
+          updated_by: profile?.id ?? null,
         })
         .eq('id', id);
       if (error) throw error;

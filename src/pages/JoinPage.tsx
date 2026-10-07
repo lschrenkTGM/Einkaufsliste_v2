@@ -43,7 +43,7 @@ export default function JoinPage() {
 
   if (status === 'error') {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-paper p-6 text-center">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6 text-center">
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-danger-soft text-danger">
           <Link2 size={28} />
         </div>
@@ -57,7 +57,7 @@ export default function JoinPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-paper p-6 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6 text-center">
       <div className="flex h-16 w-16 animate-pulse items-center justify-center rounded-2xl bg-primary-soft text-primary">
         <ShoppingBasket size={28} />
       </div>

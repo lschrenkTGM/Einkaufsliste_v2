@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/Input';
 import { useToast } from '@/components/ui/ToastContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme, type ThemePreference } from '@/hooks/useTheme';
+import { useDesignTheme, type DesignTheme } from '@/hooks/useDesignTheme';
 import { useShowCompletedSeparately } from '@/hooks/useShowCompletedSeparately';
 import { usePwaInstall } from '@/hooks/usePwaInstall';
 import { displayNameSchema, pinSchema } from '@/lib/validation';
@@ -21,8 +22,14 @@ const themeOptions: { value: ThemePreference; label: string }[] = [
   { value: 'dark', label: 'Dunkel' },
 ];
 
+const designOptions: { value: DesignTheme; label: string; description: string }[] = [
+  { value: 'clean', label: 'Clean Tech', description: 'Minimalistisch, viel Weißraum, scharfe Kontraste' },
+  { value: 'glass', label: 'Glass', description: 'Durchscheinende Flächen, weicher Farbverlauf im Hintergrund' },
+];
+
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
+  const { design, setDesign } = useDesignTheme();
   const { profile, signOut, updateDisplayName, updatePassword } = useAuth();
   const { showCompletedSeparately, setShowCompletedSeparately } = useShowCompletedSeparately();
   const { canInstall, isIos, promptInstall } = usePwaInstall();
@@ -164,7 +171,22 @@ export default function SettingsPage() {
         </section>
 
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-ink-muted">Design</h2>
+          <h2 className="text-sm font-semibold text-ink-muted">Design-Stil</h2>
+          <select
+            value={design}
+            onChange={(event) => setDesign(event.target.value as DesignTheme)}
+            className="min-h-[46px] rounded-xl border border-line bg-paper-raised px-3.5 py-2 text-base text-ink focus:border-primary focus:outline-none"
+          >
+            {designOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label} — {option.description}
+              </option>
+            ))}
+          </select>
+        </section>
+
+        <section className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold text-ink-muted">Erscheinungsbild</h2>
           <div className="flex gap-2">
             {themeOptions.map((option) => (
               <Button

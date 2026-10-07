@@ -316,7 +316,7 @@ export default function ListPage() {
         style={{ bottom: keyboardInset }}
       >
         <TotalBar total={total} openTotal={openTotal} itemsWithoutPrice={itemsWithoutPrice} />
-        <QuickAddBar items={items} onAdd={(input) => addItem.mutate(input)} />
+        <QuickAddBar items={items} categories={sortedCategories} onAdd={(input) => addItem.mutate(input)} />
       </div>
 
       <Sheet open={!!editingItem} onClose={() => setEditingItem(null)} title="Artikel bearbeiten">

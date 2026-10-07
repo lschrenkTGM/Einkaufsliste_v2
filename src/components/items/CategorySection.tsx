@@ -55,6 +55,8 @@ export function CategorySection({
               onQuantityChange={(next) => onQuantityChange(item, next)}
               onDelete={() => onDelete(item)}
               checkedByName={item.checked_by ? memberNames?.get(item.checked_by) : undefined}
+              createdByName={memberNames?.get(item.created_by)}
+              updatedByName={item.updated_by ? memberNames?.get(item.updated_by) : undefined}
             />
           ))}
         </div>

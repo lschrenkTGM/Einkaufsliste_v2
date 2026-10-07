@@ -9,7 +9,7 @@ interface AppShellProps {
 
 export function AppShell({ children, showBottomNav = true }: AppShellProps) {
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[640px] flex-col bg-paper md:border-x md:border-line">
+    <div className="mx-auto flex min-h-screen w-full max-w-[640px] flex-col md:border-x md:border-line">
       <div className="sticky top-0 z-40">
         <OfflineBanner />
       </div>

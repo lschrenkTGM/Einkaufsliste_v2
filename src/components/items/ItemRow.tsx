@@ -4,6 +4,7 @@ import { useDrag } from '@use-gesture/react';
 import { Check, Minus, Plus, Trash2 } from 'lucide-react';
 import type { Item } from '@/types/db';
 import { formatCurrency, formatQuantity } from '@/lib/format';
+import { stepFor } from '@/lib/constants';
 
 interface ItemRowProps {
   item: Item;
@@ -12,12 +13,8 @@ interface ItemRowProps {
   onQuantityChange: (nextQuantity: number) => void;
   onDelete: () => void;
   checkedByName?: string | null;
-}
-
-function stepFor(unit: string | null): number {
-  if (unit === 'kg' || unit === 'l') return 0.5;
-  if (unit === 'g' || unit === 'ml') return 50;
-  return 1;
+  createdByName?: string | null;
+  updatedByName?: string | null;
 }
 
 function vibrate() {
@@ -31,6 +28,8 @@ export function ItemRow({
   onQuantityChange,
   onDelete,
   checkedByName,
+  createdByName,
+  updatedByName,
 }: ItemRowProps) {
   const step = stepFor(item.unit);
   const lineTotal = item.price != null ? item.price * item.quantity : null;
@@ -109,7 +108,13 @@ export function ItemRow({
             {lineTotal != null && ` · ${formatCurrency(lineTotal)}`}
           </p>
           {item.checked && checkedByName && (
-            <p className="truncate text-xs text-ink-faint">Zuletzt abgehakt von {checkedByName}</p>
+            <p className="truncate text-xs text-ink-faint">Abgehakt von {checkedByName}</p>
+          )}
+          {!item.checked && (createdByName || updatedByName) && (
+            <p className="truncate text-xs text-ink-faint">
+              {createdByName && `von ${createdByName}`}
+              {updatedByName && updatedByName !== createdByName && ` · bearbeitet von ${updatedByName}`}
+            </p>
           )}
         </button>
 

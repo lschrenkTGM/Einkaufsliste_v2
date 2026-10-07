@@ -1,20 +1,4 @@
 @font-face {
-  font-family: 'Fraunces';
-  font-style: normal;
-  font-weight: 300 700;
-  font-display: swap;
-  src: url('./assets/fonts/Fraunces-Variable.woff2') format('woff2-variations');
-}
-
-@font-face {
-  font-family: 'Fraunces';
-  font-style: italic;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url('./assets/fonts/Fraunces-Italic.woff2') format('woff2-variations');
-}
-
-@font-face {
   font-family: 'Plus Jakarta Sans';
   font-style: normal;
   font-weight: 400 800;
@@ -35,50 +19,99 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --color-paper: 250 246 239;
-    --color-paper-raised: 255 253 249;
-    --color-paper-sunken: 241 234 220;
-    --color-ink: 26 32 27;
-    --color-ink-muted: 103 95 83;
-    --color-ink-faint: 158 148 132;
-    --color-border: 224 213 193;
+  /* ---------- Clean Tech (Default) ---------- */
+  :root,
+  :root[data-design='clean'] {
+    --color-paper: 255 255 255;
+    --color-paper-raised: 255 255 255;
+    --color-paper-sunken: 244 245 247;
+    --color-ink: 15 17 21;
+    --color-ink-muted: 100 107 120;
+    --color-ink-faint: 156 163 175;
+    --color-border: 228 230 235;
 
-    --color-primary: 31 95 68;
-    --color-primary-strong: 20 68 48;
-    --color-primary-soft: 222 234 223;
-    --color-primary-ink: 255 253 249;
+    --color-primary: 79 70 229;
+    --color-primary-strong: 67 56 202;
+    --color-primary-soft: 237 235 254;
+    --color-primary-ink: 255 255 255;
 
-    --color-accent: 196 101 56;
-    --color-accent-strong: 160 76 38;
-    --color-accent-soft: 243 223 203;
+    --color-accent: 217 119 6;
+    --color-accent-strong: 180 95 6;
+    --color-accent-soft: 254 243 219;
 
-    --color-danger: 169 62 48;
-    --color-danger-strong: 138 46 34;
-    --color-danger-soft: 244 221 213;
+    --color-danger: 220 38 38;
+    --color-danger-strong: 185 28 28;
+    --color-danger-soft: 254 226 226;
   }
 
-  :root.dark {
-    --color-paper: 19 18 16;
-    --color-paper-raised: 27 25 22;
-    --color-paper-sunken: 13 12 11;
-    --color-ink: 240 235 224;
-    --color-ink-muted: 166 157 142;
-    --color-ink-faint: 102 95 84;
-    --color-border: 54 49 41;
+  :root[data-design='clean'].dark {
+    --color-paper: 9 10 13;
+    --color-paper-raised: 17 19 24;
+    --color-paper-sunken: 23 26 32;
+    --color-ink: 242 243 245;
+    --color-ink-muted: 161 168 180;
+    --color-ink-faint: 98 105 117;
+    --color-border: 36 40 48;
 
-    --color-primary: 121 196 157;
-    --color-primary-strong: 157 219 180;
-    --color-primary-soft: 38 59 48;
-    --color-primary-ink: 13 26 19;
+    --color-primary: 129 140 248;
+    --color-primary-strong: 165 175 250;
+    --color-primary-soft: 40 39 74;
+    --color-primary-ink: 13 13 23;
 
-    --color-accent: 224 145 100;
-    --color-accent-strong: 237 170 128;
-    --color-accent-soft: 56 40 29;
+    --color-accent: 251 191 36;
+    --color-accent-strong: 253 211 100;
+    --color-accent-soft: 52 42 15;
 
-    --color-danger: 224 120 102;
-    --color-danger-strong: 237 150 134;
-    --color-danger-soft: 58 31 27;
+    --color-danger: 248 113 113;
+    --color-danger-strong: 252 165 165;
+    --color-danger-soft: 55 25 25;
+  }
+
+  /* ---------- Glass ---------- */
+  :root[data-design='glass'] {
+    --color-paper: 238 240 250;
+    --color-paper-raised: 255 255 255;
+    --color-paper-sunken: 225 228 245;
+    --color-ink: 20 20 35;
+    --color-ink-muted: 82 85 110;
+    --color-ink-faint: 140 143 165;
+    --color-border: 255 255 255;
+
+    --color-primary: 124 58 237;
+    --color-primary-strong: 99 41 204;
+    --color-primary-soft: 238 232 255;
+    --color-primary-ink: 255 255 255;
+
+    --color-accent: 8 145 178;
+    --color-accent-strong: 14 116 144;
+    --color-accent-soft: 207 250 254;
+
+    --color-danger: 225 29 72;
+    --color-danger-strong: 190 18 60;
+    --color-danger-soft: 255 228 235;
+  }
+
+  :root[data-design='glass'].dark {
+    --color-paper: 7 7 12;
+    --color-paper-raised: 255 255 255;
+    --color-paper-sunken: 255 255 255;
+    --color-ink: 243 244 255;
+    --color-ink-muted: 168 171 199;
+    --color-ink-faint: 110 113 140;
+    --color-border: 255 255 255;
+
+    --color-primary: 167 139 250;
+    --color-primary-strong: 196 181 253;
+    --color-primary-soft: 76 29 149;
+    --color-primary-ink: 13 10 26;
+
+    --color-accent: 34 211 238;
+    --color-accent-strong: 103 232 249;
+    --color-accent-soft: 8 51 68;
+
+    --color-danger: 251 113 133;
+    --color-danger-strong: 253 164 175;
+    --color-danger-soft: 76 17 29;
   }
 
   html {
@@ -89,13 +122,76 @@
   body {
     overscroll-behavior-y: none;
     background-color: rgb(var(--color-paper));
-    background-image:
-      radial-gradient(circle at 1.5px 1.5px, rgb(var(--color-ink) / 0.035) 1px, transparent 0);
+    background-attachment: fixed;
+  }
+
+  [data-design='clean'] body {
+    background-image: radial-gradient(circle at 1.5px 1.5px, rgb(var(--color-ink) / 0.035) 1px, transparent 0);
     background-size: 22px 22px;
   }
 
+  [data-design='glass'] body {
+    background-image:
+      radial-gradient(ellipse 80% 60% at 15% 0%, rgb(var(--color-primary) / 0.35), transparent 60%),
+      radial-gradient(ellipse 70% 60% at 85% 20%, rgb(var(--color-accent) / 0.28), transparent 55%),
+      radial-gradient(ellipse 60% 50% at 50% 100%, rgb(var(--color-primary) / 0.22), transparent 60%);
+    animation: drift 22s ease-in-out infinite alternate;
+  }
+
+  [data-design='glass'].dark body {
+    background-image:
+      radial-gradient(ellipse 80% 60% at 15% 0%, rgb(var(--color-primary) / 0.45), transparent 60%),
+      radial-gradient(ellipse 70% 60% at 85% 20%, rgb(var(--color-accent) / 0.3), transparent 55%),
+      radial-gradient(ellipse 70% 60% at 50% 100%, rgb(99 41 204 / 0.4), transparent 60%);
+  }
+
+  /* Glass surfaces: translucent + blurred, overriding the opaque utility classes */
+  [data-design='glass'] .bg-paper-raised {
+    background-color: rgb(var(--color-paper-raised) / 0.6);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  }
+  [data-design='glass'].dark .bg-paper-raised {
+    background-color: rgb(var(--color-paper-raised) / 0.08);
+  }
+  [data-design='glass'] .bg-paper-sunken {
+    background-color: rgb(var(--color-paper-raised) / 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  [data-design='glass'].dark .bg-paper-sunken {
+    background-color: rgb(var(--color-paper-raised) / 0.06);
+  }
+  [data-design='glass'] .bg-paper\/90 {
+    background-color: rgb(var(--color-paper) / 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  [data-design='glass'] .border-line {
+    border-color: rgb(var(--color-border) / 0.14);
+  }
+  [data-design='glass'] .border-line\/70 {
+    border-color: rgb(var(--color-border) / 0.08);
+  }
+  [data-design='glass'] .shadow-soft,
+  [data-design='glass'] .shadow-lifted {
+    box-shadow:
+      0 0 0 1px rgb(var(--color-border) / 0.1),
+      0 8px 32px rgb(var(--color-primary) / 0.18);
+  }
+  [data-design='glass'] .shadow-sheet {
+    box-shadow:
+      0 0 0 1px rgb(var(--color-border) / 0.12),
+      0 -8px 48px rgb(0 0 0 / 0.35);
+  }
+
+  @keyframes drift {
+    0% { background-position: 0% 0%, 100% 0%, 50% 100%; }
+    100% { background-position: 10% 10%, 90% 15%, 55% 90%; }
+  }
+
   ::selection {
-    background-color: rgb(var(--color-accent) / 0.25);
+    background-color: rgb(var(--color-primary) / 0.25);
     color: rgb(var(--color-ink));
   }
 
@@ -117,8 +213,9 @@
 }
 
 .font-display {
-  font-family: 'Fraunces', ui-serif, Georgia, serif;
-  font-variation-settings: 'opsz' 40;
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 750;
+  letter-spacing: -0.02em;
 }
 
 .safe-top {

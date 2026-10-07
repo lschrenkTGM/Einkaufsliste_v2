@@ -12,7 +12,7 @@ function applyTheme(preference: ThemePreference) {
   const isDark = preference === 'dark' || (preference === 'system' && getSystemPrefersDark());
   document.documentElement.classList.toggle('dark', isDark);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', isDark ? '#131110' : '#FAF6EF');
+  if (meta) meta.setAttribute('content', isDark ? '#090A0D' : '#FFFFFF');
 }
 
 function readStoredPreference(): ThemePreference {
