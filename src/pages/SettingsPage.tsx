@@ -34,7 +34,9 @@ export default function SettingsPage() {
   const [displayNameError, setDisplayNameError] = useState<string>();
   const [savingName, setSavingName] = useState(false);
 
+  const [oldPin, setOldPin] = useState('');
   const [newPin, setNewPin] = useState('');
+  const [oldPinError, setOldPinError] = useState<string>();
   const [pinError, setPinError] = useState<string>();
   const [savingPin, setSavingPin] = useState(false);
 
@@ -58,18 +60,22 @@ export default function SettingsPage() {
 
   async function handlePinSubmit(event: FormEvent) {
     event.preventDefault();
-    const result = pinSchema.safeParse(newPin);
-    setPinError(result.success ? undefined : result.error.issues[0]?.message);
-    if (!result.success) return;
+    const oldResult = pinSchema.safeParse(oldPin);
+    const newResult = pinSchema.safeParse(newPin);
+    setOldPinError(oldResult.success ? undefined : oldResult.error.issues[0]?.message);
+    setPinError(newResult.success ? undefined : newResult.error.issues[0]?.message);
+    if (!oldResult.success || !newResult.success) return;
 
     setSavingPin(true);
     try {
-      await updatePassword(result.data);
+      await updatePassword(newResult.data, oldResult.data);
+      setOldPin('');
       setNewPin('');
       showToast({ message: 'PIN geändert', tone: 'success' });
     } catch (error) {
       console.error(error);
-      showToast({ message: 'PIN konnte nicht geändert werden', tone: 'error' });
+      const message = error instanceof Error ? error.message : 'PIN konnte nicht geändert werden';
+      showToast({ message, tone: 'error' });
     } finally {
       setSavingPin(false);
     }
@@ -130,14 +136,25 @@ export default function SettingsPage() {
           <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">PIN ändern</h2>
           <form onSubmit={handlePinSubmit} className="flex flex-col gap-2">
             <Input
-              label="Neuer PIN (4 Ziffern)"
+              label="Aktueller PIN"
               type="password"
               inputMode="numeric"
               pattern="[0-9]*"
-              maxLength={4}
+              maxLength={6}
+              autoComplete="current-password"
+              value={oldPin}
+              onChange={(event) => setOldPin(event.target.value.replace(/\D/g, '').slice(0, 6))}
+              error={oldPinError}
+            />
+            <Input
+              label="Neuer PIN (6 Ziffern)"
+              type="password"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={6}
               autoComplete="new-password"
               value={newPin}
-              onChange={(event) => setNewPin(event.target.value.replace(/\D/g, '').slice(0, 4))}
+              onChange={(event) => setNewPin(event.target.value.replace(/\D/g, '').slice(0, 6))}
               error={pinError}
             />
             <Button type="submit" variant="secondary" disabled={savingPin}>

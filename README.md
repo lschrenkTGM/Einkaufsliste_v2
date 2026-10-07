@@ -4,7 +4,9 @@ Geteilte Einkaufslisten-PWA für Haushalt, Partner und Freunde. Mobile-first, of
 
 ## Tech-Stack
 
-React 18 + TypeScript · Vite · Tailwind CSS · React Router v6 · TanStack Query v5 (mit Offline-Persistenz) · Supabase (Postgres, Auth, Realtime) · vite-plugin-pwa · @use-gesture/react + @react-spring/web
+React 18 + TypeScript · Vite · Tailwind CSS · React Router v6 · TanStack Query v5 (mit Offline-Persistenz) · Supabase (Postgres, Realtime) · vite-plugin-pwa · @use-gesture/react + @react-spring/web
+
+**Auth:** Eigenes Username+PIN-System (eigene `profiles`-Tabelle, PINs serverseitig mit bcrypt gehasht über RPC-Funktionen `register_user`/`login_user`/`update_pin`) statt Supabase Auth — kein E-Mail-Versand nötig. RLS ist auf den App-Tabellen bewusst deaktiviert (volles Vertrauen auf Anwendungsebene, wie bei einem internen Haushalts-Tool).
 
 ## Setup
 
@@ -17,12 +19,9 @@ npm install
 ### 2. Supabase-Projekt
 
 1. Kostenloses Projekt auf [supabase.com](https://supabase.com) anlegen (Region EU empfohlen).
-2. **Authentication → Sign In / Providers → Email**:
-   - Hauptschalter **„Enable Email provider"** aktivieren (sonst schlägt jede Registrierung mit `Email signups are disabled` fehl).
-   - **„Confirm email"** deaktivieren (die App nutzt einen Fake-E-Mail-Trick ohne echten Mailversand — mit aktivierter Bestätigung bekommt niemand nach der Registrierung eine Session).
-3. SQL aus `supabase/migrations/0001_init.sql` im SQL Editor ausführen (Tabellen, RLS-Policies, Trigger, RPC-Funktionen).
-4. **Database → Replication** prüfen: `items`, `categories`, `list_members` müssen in der Realtime-Publikation sein (die Migration fügt sie automatisch hinzu).
-5. **Project Settings → API**: `Project URL` und `anon`/`publishable` Key kopieren.
+2. SQL aus `supabase/migrations/0001_init.sql` im SQL Editor ausführen (Tabellen, Funktionen, Trigger — inkl. eigenem Username+PIN-Auth-System). Keine weiteren Auth-Einstellungen im Dashboard nötig, da Supabase Auth nicht verwendet wird.
+3. **Database → Replication** prüfen: `items`, `categories`, `list_members` müssen in der Realtime-Publikation sein (die Migration fügt sie automatisch hinzu).
+4. **Project Settings → API**: `Project URL` und `anon`/`publishable` Key kopieren.
 
 ### 3. Umgebungsvariablen
 

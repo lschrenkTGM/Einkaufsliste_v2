@@ -33,13 +33,14 @@ export interface NewItemInput {
 }
 
 export function useItemMutations(listId: string | undefined) {
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const queryClient = useQueryClient();
   const invalidate = () => queryClient.invalidateQueries({ queryKey: itemsQueryKey(listId) });
 
   const addItem = useMutation({
     mutationFn: async (input: NewItemInput) => {
       if (!listId) throw new Error('Keine Liste ausgewählt');
+      if (!profile) throw new Error('Nicht eingeloggt');
       const { error } = await supabase.from('items').insert({
         id: input.id ?? crypto.randomUUID(),
         list_id: listId,
@@ -48,6 +49,7 @@ export function useItemMutations(listId: string | undefined) {
         unit: input.unit,
         price: input.price,
         category_id: input.category_id,
+        created_by: profile.id,
       });
       if (error) throw error;
     },
@@ -78,7 +80,7 @@ export function useItemMutations(listId: string | undefined) {
         .from('items')
         .update({
           checked,
-          checked_by: checked ? user?.id ?? null : null,
+          checked_by: checked ? profile?.id ?? null : null,
           checked_at: checked ? new Date().toISOString() : null,
         })
         .eq('id', id);

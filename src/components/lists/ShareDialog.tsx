@@ -14,13 +14,13 @@ interface ShareDialogProps {
 }
 
 export function ShareDialog({ list, open, onClose }: ShareDialogProps) {
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const { showToast } = useToast();
   const { data: members = [] } = useMembers(list.id);
   const removeMember = useRemoveMember(list.id);
   const { regenerateInviteCode } = useListMutations();
 
-  const isOwner = list.owner_id === user?.id;
+  const isOwner = list.owner_id === profile?.id;
   const joinUrl = `${window.location.origin}/join/${list.invite_code}`;
 
   async function copyLink() {
@@ -104,7 +104,7 @@ export function ShareDialog({ list, open, onClose }: ShareDialogProps) {
                   {member.profile?.display_name || member.profile?.username || 'Unbekannt'}
                   {member.role === 'owner' && ' (Owner)'}
                 </span>
-                {isOwner && member.userId !== user?.id && (
+                {isOwner && member.userId !== profile?.id && (
                   <button
                     onClick={() => removeMemberFromList(member.userId)}
                     aria-label="Entfernen"

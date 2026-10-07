@@ -15,16 +15,16 @@ function listsQueryKey(userId: string | undefined) {
 }
 
 export function useLists() {
-  const { user } = useAuth();
+  const { profile } = useAuth();
 
   return useQuery({
-    queryKey: listsQueryKey(user?.id),
-    enabled: !!user,
+    queryKey: listsQueryKey(profile?.id),
+    enabled: !!profile,
     queryFn: async (): Promise<ListSummary[]> => {
       const { data: memberships, error: membershipError } = await supabase
         .from('list_members')
         .select('list_id, role')
-        .eq('user_id', user!.id);
+        .eq('user_id', profile!.id);
       if (membershipError) throw membershipError;
       if (!memberships || memberships.length === 0) return [];
 
@@ -70,14 +70,19 @@ export function useList(listId: string | undefined) {
 }
 
 export function useListMutations() {
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const queryClient = useQueryClient();
 
-  const invalidateLists = () => queryClient.invalidateQueries({ queryKey: listsQueryKey(user?.id) });
+  const invalidateLists = () => queryClient.invalidateQueries({ queryKey: listsQueryKey(profile?.id) });
 
   const createList = useMutation({
     mutationFn: async ({ name, emoji }: { name: string; emoji: string }) => {
-      const { data, error } = await supabase.from('lists').insert({ name, emoji }).select().single();
+      if (!profile) throw new Error('Nicht eingeloggt');
+      const { data, error } = await supabase
+        .from('lists')
+        .insert({ name, emoji, owner_id: profile.id })
+        .select()
+        .single();
       if (error) throw error;
       return data;
     },
@@ -105,12 +110,12 @@ export function useListMutations() {
 
   const leaveList = useMutation({
     mutationFn: async (id: string) => {
-      if (!user) throw new Error('Nicht eingeloggt');
+      if (!profile) throw new Error('Nicht eingeloggt');
       const { error } = await supabase
         .from('list_members')
         .delete()
         .eq('list_id', id)
-        .eq('user_id', user.id);
+        .eq('user_id', profile.id);
       if (error) throw error;
     },
     onSuccess: invalidateLists,
@@ -118,7 +123,11 @@ export function useListMutations() {
 
   const regenerateInviteCode = useMutation({
     mutationFn: async (listId: string) => {
-      const { data, error } = await supabase.rpc('regenerate_invite_code', { _list_id: listId });
+      if (!profile) throw new Error('Nicht eingeloggt');
+      const { data, error } = await supabase.rpc('regenerate_invite_code', {
+        _list_id: listId,
+        _user_id: profile.id,
+      });
       if (error) throw error;
       return data;
     },

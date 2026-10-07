@@ -3,8 +3,9 @@
 // Typauflösung von @supabase/supabase-js (`.update()`) auf `never`.
 export type Profile = {
   id: string;
-  username: string | null;
+  username: string;
   display_name: string | null;
+  pin_hash: string;
   created_at: string;
 };
 
@@ -55,13 +56,13 @@ export type Database = {
     Tables: {
       profiles: {
         Row: Profile;
-        Insert: Partial<Profile> & { id: string };
+        Insert: Partial<Profile> & { id: string; username: string; pin_hash: string };
         Update: Partial<Profile>;
         Relationships: [];
       };
       lists: {
         Row: ShoppingList;
-        Insert: Partial<ShoppingList> & { name: string };
+        Insert: Partial<ShoppingList> & { name: string; owner_id: string };
         Update: Partial<ShoppingList>;
         Relationships: [];
       };
@@ -79,16 +80,18 @@ export type Database = {
       };
       items: {
         Row: Item;
-        Insert: Partial<Item> & { id: string; list_id: string; name: string };
+        Insert: Partial<Item> & { id: string; list_id: string; name: string; created_by: string };
         Update: Partial<Item>;
         Relationships: [];
       };
     };
     Views: { [_ in never]: never };
     Functions: {
-      join_list_by_code: { Args: { _code: string }; Returns: string };
-      regenerate_invite_code: { Args: { _list_id: string }; Returns: string };
-      is_list_member: { Args: { _list_id: string }; Returns: boolean };
+      register_user: { Args: { _username: string; _pin: string; _display_name?: string }; Returns: Profile };
+      login_user: { Args: { _username: string; _pin: string }; Returns: Profile };
+      update_pin: { Args: { _user_id: string; _old_pin: string; _new_pin: string }; Returns: void };
+      join_list_by_code: { Args: { _code: string; _user_id: string }; Returns: string };
+      regenerate_invite_code: { Args: { _list_id: string; _user_id: string }; Returns: string };
     };
   };
 };

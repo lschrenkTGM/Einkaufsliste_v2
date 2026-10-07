@@ -1,17 +1,16 @@
 import { createContext, useContext } from 'react';
-import type { Session, User } from '@supabase/supabase-js';
 import type { Profile } from '@/types/db';
 
+export type PublicProfile = Omit<Profile, 'pin_hash'>;
+
 export interface AuthContextValue {
-  session: Session | null;
-  user: User | null;
-  profile: Profile | null;
+  profile: PublicProfile | null;
   loading: boolean;
-  signUp: (username: string, password: string) => Promise<void>;
-  signIn: (username: string, password: string) => Promise<void>;
+  signUp: (username: string, pin: string) => Promise<void>;
+  signIn: (username: string, pin: string) => Promise<void>;
   signOut: () => Promise<void>;
   updateDisplayName: (displayName: string) => Promise<void>;
-  updatePassword: (password: string) => Promise<void>;
+  updatePassword: (newPin: string, oldPin: string) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);

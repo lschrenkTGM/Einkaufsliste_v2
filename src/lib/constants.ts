@@ -19,6 +19,4 @@ export const LIST_EMOJIS = [
   '🧴', '🔨', '🐾', '👶', '💊', '🎉', '🎂', '🧰', '🚗', '📦',
 ] as const;
 
-export const FAKE_EMAIL_DOMAIN = 'einkaufsliste.app';
-
 export const APP_VERSION = '0.1.0';

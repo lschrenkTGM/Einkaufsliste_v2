@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { FAKE_EMAIL_DOMAIN } from './constants';
 
 export const usernameSchema = z
   .string()
@@ -9,10 +8,6 @@ export const usernameSchema = z
 
 export const pinSchema = z
   .string()
-  .regex(/^\d{4}$/, 'PIN muss genau 4 Ziffern haben');
+  .regex(/^\d{6}$/, 'PIN muss genau 6 Ziffern haben');
 
 export const displayNameSchema = z.string().min(1, 'Darf nicht leer sein').max(40, 'Höchstens 40 Zeichen');
-
-export function usernameToFakeEmail(username: string): string {
-  return `${username.toLowerCase()}@${FAKE_EMAIL_DOMAIN}`;
-}

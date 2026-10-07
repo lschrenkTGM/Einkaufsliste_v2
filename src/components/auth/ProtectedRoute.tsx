@@ -3,14 +3,10 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { session, loading } = useAuth();
+  const { profile } = useAuth();
   const location = useLocation();
 
-  if (loading) {
-    return <div className="flex min-h-screen items-center justify-center text-sm text-neutral-400">Lädt…</div>;
-  }
-
-  if (!session) {
+  if (!profile) {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 

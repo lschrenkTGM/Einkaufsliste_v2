@@ -17,17 +17,17 @@ export default function LoginPage() {
   const [pinError, setPinError] = useState<string>();
   const [submitting, setSubmitting] = useState(false);
 
-  const { session, loading, signIn, signUp } = useAuth();
+  const { profile, signIn, signUp } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const redirectTo = (location.state as { from?: string } | null)?.from ?? '/';
 
   useEffect(() => {
-    if (!loading && session) {
+    if (profile) {
       navigate(redirectTo, { replace: true });
     }
-  }, [loading, session, navigate, redirectTo]);
+  }, [profile, navigate, redirectTo]);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -74,15 +74,15 @@ export default function LoginPage() {
           error={usernameError}
         />
         <Input
-          label="PIN (4 Ziffern)"
+          label="PIN (6 Ziffern)"
           name="pin"
           type="password"
           inputMode="numeric"
           pattern="[0-9]*"
-          maxLength={4}
+          maxLength={6}
           autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
           value={pin}
-          onChange={(event) => setPin(event.target.value.replace(/\D/g, '').slice(0, 4))}
+          onChange={(event) => setPin(event.target.value.replace(/\D/g, '').slice(0, 6))}
           error={pinError}
         />
 

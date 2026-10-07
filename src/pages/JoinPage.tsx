@@ -3,23 +3,28 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Link2, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/hooks/useAuth';
 
 type Status = 'joining' | 'error' | 'done';
 
 export default function JoinPage() {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
+  const { profile } = useAuth();
   const [status, setStatus] = useState<Status>('joining');
 
   useEffect(() => {
     let active = true;
 
     async function join() {
-      if (!code) {
+      if (!code || !profile) {
         setStatus('error');
         return;
       }
-      const { data, error } = await supabase.rpc('join_list_by_code', { _code: code });
+      const { data, error } = await supabase.rpc('join_list_by_code', {
+        _code: code,
+        _user_id: profile.id,
+      });
       if (!active) return;
       if (error || !data) {
         console.error(error);
@@ -34,7 +39,7 @@ export default function JoinPage() {
     return () => {
       active = false;
     };
-  }, [code, navigate]);
+  }, [code, navigate, profile]);
 
   if (status === 'error') {
     return (
