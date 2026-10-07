@@ -5,16 +5,16 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { useToast } from '@/components/ui/ToastContext';
 import { useAuth } from '@/hooks/useAuth';
-import { passwordSchema, usernameSchema } from '@/lib/validation';
+import { pinSchema, usernameSchema } from '@/lib/validation';
 
 type Mode = 'login' | 'register';
 
 export default function LoginPage() {
   const [mode, setMode] = useState<Mode>('login');
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [pin, setPin] = useState('');
   const [usernameError, setUsernameError] = useState<string>();
-  const [passwordError, setPasswordError] = useState<string>();
+  const [pinError, setPinError] = useState<string>();
   const [submitting, setSubmitting] = useState(false);
 
   const { session, loading, signIn, signUp } = useAuth();
@@ -34,18 +34,18 @@ export default function LoginPage() {
     const normalizedUsername = username.trim().toLowerCase();
 
     const usernameResult = usernameSchema.safeParse(normalizedUsername);
-    const passwordResult = passwordSchema.safeParse(password);
+    const pinResult = pinSchema.safeParse(pin);
     setUsernameError(usernameResult.success ? undefined : usernameResult.error.issues[0]?.message);
-    setPasswordError(passwordResult.success ? undefined : passwordResult.error.issues[0]?.message);
-    if (!usernameResult.success || !passwordResult.success) return;
+    setPinError(pinResult.success ? undefined : pinResult.error.issues[0]?.message);
+    if (!usernameResult.success || !pinResult.success) return;
 
     setSubmitting(true);
     try {
       if (mode === 'register') {
-        await signUp(normalizedUsername, password);
+        await signUp(normalizedUsername, pin);
         showToast({ message: 'Account erstellt! Du bist eingeloggt.', tone: 'success' });
       } else {
-        await signIn(normalizedUsername, password);
+        await signIn(normalizedUsername, pin);
       }
       navigate(redirectTo, { replace: true });
     } catch (error) {
@@ -74,18 +74,21 @@ export default function LoginPage() {
           error={usernameError}
         />
         <Input
-          label="Passwort"
-          name="password"
+          label="PIN (4 Ziffern)"
+          name="pin"
           type="password"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={4}
           autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          error={passwordError}
+          value={pin}
+          onChange={(event) => setPin(event.target.value.replace(/\D/g, '').slice(0, 4))}
+          error={pinError}
         />
 
         {mode === 'register' && (
           <p className="text-sm text-neutral-500 dark:text-neutral-400">
-            Merk dir dein Passwort gut, es gibt keine Wiederherstellung.
+            Merk dir deinen PIN gut, es gibt keine Wiederherstellung.
           </p>
         )}
 

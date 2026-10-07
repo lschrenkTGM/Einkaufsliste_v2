@@ -12,7 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useTheme, type ThemePreference } from '@/hooks/useTheme';
 import { useShowCompletedSeparately } from '@/hooks/useShowCompletedSeparately';
 import { usePwaInstall } from '@/hooks/usePwaInstall';
-import { displayNameSchema, passwordSchema } from '@/lib/validation';
+import { displayNameSchema, pinSchema } from '@/lib/validation';
 import { APP_VERSION } from '@/lib/constants';
 
 const themeOptions: { value: ThemePreference; label: string }[] = [
@@ -34,9 +34,9 @@ export default function SettingsPage() {
   const [displayNameError, setDisplayNameError] = useState<string>();
   const [savingName, setSavingName] = useState(false);
 
-  const [newPassword, setNewPassword] = useState('');
-  const [passwordError, setPasswordError] = useState<string>();
-  const [savingPassword, setSavingPassword] = useState(false);
+  const [newPin, setNewPin] = useState('');
+  const [pinError, setPinError] = useState<string>();
+  const [savingPin, setSavingPin] = useState(false);
 
   async function handleDisplayNameSubmit(event: FormEvent) {
     event.preventDefault();
@@ -56,22 +56,22 @@ export default function SettingsPage() {
     }
   }
 
-  async function handlePasswordSubmit(event: FormEvent) {
+  async function handlePinSubmit(event: FormEvent) {
     event.preventDefault();
-    const result = passwordSchema.safeParse(newPassword);
-    setPasswordError(result.success ? undefined : result.error.issues[0]?.message);
+    const result = pinSchema.safeParse(newPin);
+    setPinError(result.success ? undefined : result.error.issues[0]?.message);
     if (!result.success) return;
 
-    setSavingPassword(true);
+    setSavingPin(true);
     try {
       await updatePassword(result.data);
-      setNewPassword('');
-      showToast({ message: 'Passwort geändert', tone: 'success' });
+      setNewPin('');
+      showToast({ message: 'PIN geändert', tone: 'success' });
     } catch (error) {
       console.error(error);
-      showToast({ message: 'Passwort konnte nicht geändert werden', tone: 'error' });
+      showToast({ message: 'PIN konnte nicht geändert werden', tone: 'error' });
     } finally {
-      setSavingPassword(false);
+      setSavingPin(false);
     }
   }
 
@@ -127,18 +127,21 @@ export default function SettingsPage() {
         </section>
 
         <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">Passwort ändern</h2>
-          <form onSubmit={handlePasswordSubmit} className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">PIN ändern</h2>
+          <form onSubmit={handlePinSubmit} className="flex flex-col gap-2">
             <Input
-              label="Neues Passwort"
+              label="Neuer PIN (4 Ziffern)"
               type="password"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={4}
               autoComplete="new-password"
-              value={newPassword}
-              onChange={(event) => setNewPassword(event.target.value)}
-              error={passwordError}
+              value={newPin}
+              onChange={(event) => setNewPin(event.target.value.replace(/\D/g, '').slice(0, 4))}
+              error={pinError}
             />
-            <Button type="submit" variant="secondary" disabled={savingPassword}>
-              Passwort speichern
+            <Button type="submit" variant="secondary" disabled={savingPin}>
+              PIN speichern
             </Button>
           </form>
         </section>

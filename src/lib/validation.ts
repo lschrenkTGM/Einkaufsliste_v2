@@ -7,7 +7,9 @@ export const usernameSchema = z
   .max(20, 'Höchstens 20 Zeichen')
   .regex(/^[a-z0-9_-]+$/, 'Nur Kleinbuchstaben, Zahlen, _ und -');
 
-export const passwordSchema = z.string().min(8, 'Mindestens 8 Zeichen');
+export const pinSchema = z
+  .string()
+  .regex(/^\d{4}$/, 'PIN muss genau 4 Ziffern haben');
 
 export const displayNameSchema = z.string().min(1, 'Darf nicht leer sein').max(40, 'Höchstens 40 Zeichen');
 
