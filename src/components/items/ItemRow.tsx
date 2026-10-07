@@ -7,6 +7,7 @@ interface ItemRowProps {
   onToggle: () => void;
   onEdit: () => void;
   onQuantityChange: (nextQuantity: number) => void;
+  checkedByName?: string | null;
 }
 
 function stepFor(unit: string | null): number {
@@ -15,7 +16,7 @@ function stepFor(unit: string | null): number {
   return 1;
 }
 
-export function ItemRow({ item, onToggle, onEdit, onQuantityChange }: ItemRowProps) {
+export function ItemRow({ item, onToggle, onEdit, onQuantityChange, checkedByName }: ItemRowProps) {
   const step = stepFor(item.unit);
   const lineTotal = item.price != null ? item.price * item.quantity : null;
 
@@ -49,6 +50,11 @@ export function ItemRow({ item, onToggle, onEdit, onQuantityChange }: ItemRowPro
           {formatQuantity(item.quantity)} {item.unit ?? ''}
           {lineTotal != null && ` · ${formatCurrency(lineTotal)}`}
         </p>
+        {item.checked && checkedByName && (
+          <p className="truncate text-xs text-neutral-400 dark:text-neutral-500">
+            Zuletzt abgehakt von {checkedByName}
+          </p>
+        )}
       </button>
 
       {!item.checked && (

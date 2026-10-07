@@ -116,5 +116,17 @@ export function useListMutations() {
     onSuccess: invalidateLists,
   });
 
-  return { createList, renameList, deleteList, leaveList };
+  const regenerateInviteCode = useMutation({
+    mutationFn: async (listId: string) => {
+      const { data, error } = await supabase.rpc('regenerate_invite_code', { _list_id: listId });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (_data, listId) => {
+      invalidateLists();
+      queryClient.invalidateQueries({ queryKey: ['list', listId] });
+    },
+  });
+
+  return { createList, renameList, deleteList, leaveList, regenerateInviteCode };
 }

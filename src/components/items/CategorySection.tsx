@@ -11,6 +11,7 @@ interface CategorySectionProps {
   onEdit: (item: Item) => void;
   onQuantityChange: (item: Item, nextQuantity: number) => void;
   defaultCollapsed?: boolean;
+  memberNames?: Map<string, string>;
 }
 
 export function CategorySection({
@@ -21,6 +22,7 @@ export function CategorySection({
   onEdit,
   onQuantityChange,
   defaultCollapsed = false,
+  memberNames,
 }: CategorySectionProps) {
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
   if (items.length === 0) return null;
@@ -49,6 +51,7 @@ export function CategorySection({
               onToggle={() => onToggle(item)}
               onEdit={() => onEdit(item)}
               onQuantityChange={(next) => onQuantityChange(item, next)}
+              checkedByName={item.checked_by ? memberNames?.get(item.checked_by) : undefined}
             />
           ))}
         </div>

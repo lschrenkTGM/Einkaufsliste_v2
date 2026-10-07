@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ListChecks, MoreVertical } from 'lucide-react';
+import { ListChecks, MoreVertical, Share2 } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { AppShell } from '@/components/layout/AppShell';
 import { Sheet } from '@/components/ui/Sheet';
@@ -12,10 +12,13 @@ import { TotalBar } from '@/components/items/TotalBar';
 import { QuickAddBar } from '@/components/items/QuickAddBar';
 import { ItemForm } from '@/components/items/ItemForm';
 import { ManageCategories } from '@/components/items/ManageCategories';
+import { ShareDialog } from '@/components/lists/ShareDialog';
+import { useMembers } from '@/hooks/useMembers';
 import { useList } from '@/hooks/useLists';
 import { useCategories, useCategoryMutations } from '@/hooks/useCategories';
 import { useItems, useItemMutations } from '@/hooks/useItems';
 import { useShowCompletedSeparately } from '@/hooks/useShowCompletedSeparately';
+import { useRealtime } from '@/hooks/useRealtime';
 import type { Category, Item } from '@/types/db';
 
 function sortForDisplay(items: Item[]): Item[] {
@@ -30,15 +33,28 @@ export default function ListPage() {
   const { data: list } = useList(id);
   const { data: categories = [] } = useCategories(id);
   const { data: items = [] } = useItems(id);
+  const { data: members = [] } = useMembers(id);
+  const memberNames = useMemo(
+    () =>
+      new Map(
+        members.map((member) => [
+          member.userId,
+          member.profile?.display_name || member.profile?.username || 'Unbekannt',
+        ]),
+      ),
+    [members],
+  );
   const { addCategory, updateCategory, deleteCategory } = useCategoryMutations(id);
   const { addItem, updateItem, toggleChecked, deleteItem, deleteChecked, resetAllChecked } =
     useItemMutations(id);
   const { showCompletedSeparately } = useShowCompletedSeparately();
   const { showToast } = useToast();
+  useRealtime(id);
 
   const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [manageCategoriesOpen, setManageCategoriesOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   const sortedCategories = useMemo(
     () => [...categories].sort((a, b) => a.sort_order - b.sort_order),
@@ -188,13 +204,22 @@ export default function ListPage() {
         title={list ? `${list.emoji} ${list.name}` : 'Liste'}
         showBack
         actions={
-          <button
-            onClick={() => setMenuOpen(true)}
-            aria-label="Menü"
-            className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
-          >
-            <MoreVertical size={20} />
-          </button>
+          <>
+            <button
+              onClick={() => setShareOpen(true)}
+              aria-label="Teilen"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+            >
+              <Share2 size={20} />
+            </button>
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label="Menü"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+            >
+              <MoreVertical size={20} />
+            </button>
+          </>
         }
       />
 
@@ -216,6 +241,7 @@ export default function ListPage() {
             onToggle={handleToggle}
             onEdit={setEditingItem}
             onQuantityChange={handleQuantityChange}
+            memberNames={memberNames}
           />
         ))}
 
@@ -226,6 +252,7 @@ export default function ListPage() {
           onToggle={handleToggle}
           onEdit={setEditingItem}
           onQuantityChange={handleQuantityChange}
+          memberNames={memberNames}
         />
 
         {showCompletedSeparately && completedItems.length > 0 && (
@@ -236,6 +263,7 @@ export default function ListPage() {
             onToggle={handleToggle}
             onEdit={setEditingItem}
             onQuantityChange={handleQuantityChange}
+            memberNames={memberNames}
             defaultCollapsed
           />
         )}
@@ -284,8 +312,19 @@ export default function ListPage() {
           >
             Kategorien verwalten
           </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setMenuOpen(false);
+              setShareOpen(true);
+            }}
+          >
+            Mitglieder anzeigen
+          </Button>
         </div>
       </Sheet>
+
+      {list && <ShareDialog list={list} open={shareOpen} onClose={() => setShareOpen(false)} />}
     </AppShell>
   );
 }
