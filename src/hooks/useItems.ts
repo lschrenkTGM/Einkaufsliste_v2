@@ -24,6 +24,7 @@ export function useItems(listId: string | undefined) {
 }
 
 export interface NewItemInput {
+  id?: string;
   name: string;
   quantity: number;
   unit: string | null;
@@ -40,7 +41,7 @@ export function useItemMutations(listId: string | undefined) {
     mutationFn: async (input: NewItemInput) => {
       if (!listId) throw new Error('Keine Liste ausgewählt');
       const { error } = await supabase.from('items').insert({
-        id: crypto.randomUUID(),
+        id: input.id ?? crypto.randomUUID(),
         list_id: listId,
         name: input.name,
         quantity: input.quantity,

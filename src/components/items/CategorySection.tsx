@@ -10,6 +10,7 @@ interface CategorySectionProps {
   onToggle: (item: Item) => void;
   onEdit: (item: Item) => void;
   onQuantityChange: (item: Item, nextQuantity: number) => void;
+  onDelete: (item: Item) => void;
   defaultCollapsed?: boolean;
   memberNames?: Map<string, string>;
 }
@@ -21,6 +22,7 @@ export function CategorySection({
   onToggle,
   onEdit,
   onQuantityChange,
+  onDelete,
   defaultCollapsed = false,
   memberNames,
 }: CategorySectionProps) {
@@ -51,6 +53,7 @@ export function CategorySection({
               onToggle={() => onToggle(item)}
               onEdit={() => onEdit(item)}
               onQuantityChange={(next) => onQuantityChange(item, next)}
+              onDelete={() => onDelete(item)}
               checkedByName={item.checked_by ? memberNames?.get(item.checked_by) : undefined}
             />
           ))}

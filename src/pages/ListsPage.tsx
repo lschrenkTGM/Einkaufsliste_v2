@@ -3,6 +3,7 @@ import { Plus, ShoppingCart, UserPlus } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { AppShell } from '@/components/layout/AppShell';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { Button } from '@/components/ui/Button';
 import { Sheet } from '@/components/ui/Sheet';
 import { useToast } from '@/components/ui/ToastContext';
@@ -72,6 +73,14 @@ export default function ListsPage() {
   return (
     <AppShell>
       <Header title="Meine Listen" />
+
+      {isLoading && (
+        <div className="flex flex-col gap-3 p-4">
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
+        </div>
+      )}
 
       {!isLoading && lists?.length === 0 && (
         <EmptyState

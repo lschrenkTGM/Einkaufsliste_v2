@@ -19,6 +19,8 @@ import { useCategories, useCategoryMutations } from '@/hooks/useCategories';
 import { useItems, useItemMutations } from '@/hooks/useItems';
 import { useShowCompletedSeparately } from '@/hooks/useShowCompletedSeparately';
 import { useRealtime } from '@/hooks/useRealtime';
+import { useKeyboardInset } from '@/hooks/useKeyboardInset';
+import { Skeleton } from '@/components/ui/Skeleton';
 import type { Category, Item } from '@/types/db';
 
 function sortForDisplay(items: Item[]): Item[] {
@@ -31,8 +33,9 @@ function sortForDisplay(items: Item[]): Item[] {
 export default function ListPage() {
   const { id } = useParams<{ id: string }>();
   const { data: list } = useList(id);
-  const { data: categories = [] } = useCategories(id);
-  const { data: items = [] } = useItems(id);
+  const { data: categories = [], isLoading: categoriesLoading } = useCategories(id);
+  const { data: items = [], isLoading: itemsLoading } = useItems(id);
+  const keyboardInset = useKeyboardInset();
   const { data: members = [] } = useMembers(id);
   const memberNames = useMemo(
     () =>
@@ -108,6 +111,32 @@ export default function ListPage() {
     } catch (error) {
       console.error(error);
       showToast({ message: 'Menge konnte nicht geändert werden', tone: 'error' });
+    }
+  }
+
+  async function handleSwipeDelete(item: Item) {
+    try {
+      await deleteItem.mutateAsync(item.id);
+      showToast({
+        message: `„${item.name}“ gelöscht`,
+        tone: 'info',
+        action: {
+          label: 'Rückgängig',
+          onClick: () => {
+            addItem.mutate({
+              id: item.id,
+              name: item.name,
+              quantity: item.quantity,
+              unit: item.unit,
+              price: item.price,
+              category_id: item.category_id,
+            });
+          },
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      showToast({ message: 'Löschen fehlgeschlagen', tone: 'error' });
     }
   }
 
@@ -197,6 +226,7 @@ export default function ListPage() {
   }
 
   const hasAnyItems = items.length > 0;
+  const isInitialLoading = (itemsLoading || categoriesLoading) && items.length === 0 && categories.length === 0;
 
   return (
     <AppShell showBottomNav={false}>
@@ -224,7 +254,16 @@ export default function ListPage() {
       />
 
       <div className="pb-40">
-        {!hasAnyItems && (
+        {isInitialLoading && (
+          <div className="flex flex-col gap-3 p-4">
+            <Skeleton className="h-6 w-1/3" />
+            <Skeleton className="h-14 w-full" />
+            <Skeleton className="h-14 w-full" />
+            <Skeleton className="h-14 w-full" />
+          </div>
+        )}
+
+        {!isInitialLoading && !hasAnyItems && (
           <EmptyState
             icon={<ListChecks size={40} />}
             title="Noch keine Artikel"
@@ -241,6 +280,7 @@ export default function ListPage() {
             onToggle={handleToggle}
             onEdit={setEditingItem}
             onQuantityChange={handleQuantityChange}
+            onDelete={handleSwipeDelete}
             memberNames={memberNames}
           />
         ))}
@@ -252,6 +292,7 @@ export default function ListPage() {
           onToggle={handleToggle}
           onEdit={setEditingItem}
           onQuantityChange={handleQuantityChange}
+          onDelete={handleSwipeDelete}
           memberNames={memberNames}
         />
 
@@ -263,13 +304,17 @@ export default function ListPage() {
             onToggle={handleToggle}
             onEdit={setEditingItem}
             onQuantityChange={handleQuantityChange}
+            onDelete={handleSwipeDelete}
             memberNames={memberNames}
             defaultCollapsed
           />
         )}
       </div>
 
-      <div className="safe-bottom fixed inset-x-0 bottom-0 mx-auto max-w-[640px] border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
+      <div
+        className="safe-bottom fixed inset-x-0 mx-auto max-w-[640px] border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950"
+        style={{ bottom: keyboardInset }}
+      >
         <TotalBar total={total} openTotal={openTotal} itemsWithoutPrice={itemsWithoutPrice} />
         <QuickAddBar items={items} onAdd={(input) => addItem.mutate(input)} />
       </div>
