@@ -11,11 +11,19 @@ interface HeaderProps {
 export function Header({ title, showBack, actions }: HeaderProps) {
   const navigate = useNavigate();
 
+  // navigate(-1) tut nichts, wenn die Seite direkt geöffnet wurde (PWA-Start,
+  // Reload, geteilter Link) – dann gibt es keinen App-internen Verlauf.
+  const goBack = () => {
+    const idx = (window.history.state as { idx?: number } | null)?.idx ?? 0;
+    if (idx > 0) navigate(-1);
+    else navigate('/', { replace: true });
+  };
+
   return (
     <header className="safe-top sticky top-0 z-30 flex h-16 items-center gap-1 border-b border-line bg-paper/90 px-2 backdrop-blur-md">
       {showBack && (
         <button
-          onClick={() => navigate(-1)}
+          onClick={goBack}
           aria-label="Zurück"
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-paper-sunken hover:text-ink"
         >
