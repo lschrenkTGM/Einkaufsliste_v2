@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react';
-import { LogOut } from 'lucide-react';
+import { LogOut, Share2, Smartphone, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { del } from 'idb-keyval';
 import { Header } from '@/components/layout/Header';
 import { AppShell } from '@/components/layout/AppShell';
 import { Button } from '@/components/ui/Button';
@@ -8,7 +10,10 @@ import { Input } from '@/components/ui/Input';
 import { useToast } from '@/components/ui/ToastContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme, type ThemePreference } from '@/hooks/useTheme';
+import { useShowCompletedSeparately } from '@/hooks/useShowCompletedSeparately';
+import { usePwaInstall } from '@/hooks/usePwaInstall';
 import { displayNameSchema, passwordSchema } from '@/lib/validation';
+import { APP_VERSION } from '@/lib/constants';
 
 const themeOptions: { value: ThemePreference; label: string }[] = [
   { value: 'system', label: 'System' },
@@ -19,8 +24,11 @@ const themeOptions: { value: ThemePreference; label: string }[] = [
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const { profile, signOut, updateDisplayName, updatePassword } = useAuth();
+  const { showCompletedSeparately, setShowCompletedSeparately } = useShowCompletedSeparately();
+  const { canInstall, isIos, promptInstall } = usePwaInstall();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [displayName, setDisplayName] = useState(profile?.display_name ?? '');
   const [displayNameError, setDisplayNameError] = useState<string>();
@@ -77,6 +85,27 @@ export default function SettingsPage() {
     }
   }
 
+  async function handleInstall() {
+    try {
+      await promptInstall();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function handleClearLocalData() {
+    if (!window.confirm('Lokale Daten löschen? Offline gespeicherte Listen werden entfernt.')) return;
+    try {
+      queryClient.clear();
+      await del('einkaufsliste-query-cache');
+      showToast({ message: 'Lokale Daten gelöscht', tone: 'success' });
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      showToast({ message: 'Löschen fehlgeschlagen', tone: 'error' });
+    }
+  }
+
   return (
     <AppShell>
       <Header title="Einstellungen" />
@@ -128,6 +157,39 @@ export default function SettingsPage() {
               </Button>
             ))}
           </div>
+        </section>
+
+        <section className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">Listenansicht</h2>
+          <label className="flex items-center justify-between rounded-xl border border-neutral-200 px-3 py-2 dark:border-neutral-800">
+            <span className="text-sm text-neutral-900 dark:text-neutral-100">
+              Erledigte separat anzeigen
+            </span>
+            <input
+              type="checkbox"
+              checked={showCompletedSeparately}
+              onChange={(event) => setShowCompletedSeparately(event.target.checked)}
+              className="h-5 w-5 accent-primary-600"
+            />
+          </label>
+        </section>
+
+        <section className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400">App</h2>
+          {canInstall && (
+            <Button variant="secondary" onClick={handleInstall}>
+              <Smartphone size={18} /> App installieren
+            </Button>
+          )}
+          {!canInstall && isIos && (
+            <p className="flex items-center gap-2 rounded-xl border border-neutral-200 px-3 py-2 text-sm text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
+              <Share2 size={16} /> Teilen → Zum Home-Bildschirm
+            </p>
+          )}
+          <Button variant="secondary" onClick={handleClearLocalData}>
+            <Trash2 size={18} /> Lokale Daten löschen
+          </Button>
+          <p className="text-xs text-neutral-400">Version {APP_VERSION}</p>
         </section>
 
         <section className="flex flex-col gap-2">
